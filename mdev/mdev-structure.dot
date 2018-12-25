@@ -1,0 +1,51 @@
+digraph mdev {
+	graph [
+		rankdir = "LR"
+	];
+	node [
+		fontsize = "16"
+		shape = "ellipse"
+	];
+	edge [
+	];
+	"mdev_bus" [
+		label = "<f0> mdev_bus_type | <f1> \"mdev\" | <f2> mdev_probe | <f3> mdev_remove"
+		shape = "record"
+	];
+	"mdev_device" [
+		label = "<f0> struct mdev_device | <f1> dev | <f2> *parent | <f3> uuid | <f4> driver_data | <f5> ref | <f6> next | <f7> *type_kobj | <f8> active"
+		shape = "record"
+	];
+	"mdev_parent" [
+		label = "<f0> struct mdev_parent | <f1> *dev | <f2> *ops | <f3> ref | <f4> lock | <f5> next | <f6> mdev_types_kset | <f7> type_list"
+		shape = "record"
+	];
+	"mdev_parent_ops" [
+		label = "<f0> struct mdev_parent_ops | <f1> *owner | <f2> **dev_attr_groups | <f3> **mdev_attr_groups | <f4> **supported_type_groups | <f5> *create | <f6> *remove | <f7> *open | <f8> *release | <f9> *read | <f10> *write | <f11> *ioctl | <f12> *mmap"
+		shape = "record"
+	];
+	"mdev_driver" [
+		label = "<f0> struct mdev_driver | <f1> *name | <f2> *probe | <f3> *remove | <f4> driver"
+		shape = "record"
+	];
+
+	"vfio_mdev_driver" [
+		       label = "<f0>  vfio_mdev_driver | <f1> \"vfio_mdev\" | <f2> vfio_mdev_probe | <f3> vfio_mdev_remove"
+		       shape = "record"
+		       ];
+	"mdev_bus": f0 -> "mdev_device": f0 [
+		id = 0
+	];
+	"mdev_bus": f0 -> "mdev_driver": f0 [
+		id = 1
+		];
+	"mdev_device":f2 -> "mdev_parent":f0 [
+		id = 2
+	];
+	"mdev_parent":f2 -> "mdev_parent_ops":f0 [
+		id = 3
+	];
+	"mdev_driver": f0 -> "vfio_mdev_driver": f0 [
+						     style=dashed
+						     ];
+}
