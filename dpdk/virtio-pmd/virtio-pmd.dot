@@ -1,0 +1,112 @@
+digraph g {
+  graph [
+	 rankdir = "LR"
+	 ];
+  node [
+	fontsize = "16"
+	shape = "ellipse"
+	];
+  edge [
+	];
+  "virtio_hw" [
+	   label = "<f0> struct virtio_hw| <f1> virtnet_ctl *cvq | req_guest_features | guest_features | max_queue_pairs| started | max_mtu| vtnet_hdr_size| vlan_strip| use_msix| modern | use_simple_rx|  use_inorder_rx| use_inorder_tx| weak_barriers| has_tx_offload| has_rx_offload | port_id| mac_addr[]| notify_off_multiplier| *isr| *notify_base| <f2> virtio_pci_common_cfg *common_cfg| <f3> virtio_net_config *dev_cfg| <f4> *virtio_user_dev| state_lock| <f5> rte_mbuf **inject_pkts| opened| <f6> virtqueue **vqs"
+	   shape = "record"
+	   ];
+  "virtqueue" [
+	   label = "<f0> struct virtqueue| <f1> virtio_hw *hw | <f2> union vq_split(vring) | <f3> union vq_packed | vq_used_cons_idx | vq_nentries | vq_free_cnt | vq_avail_idx | vq_free_thresh | *vq_ring_virt_mem |  vq_ring_size | <f4> union virtnet_rx rxq | <f5> union virtnet_tx txq | <f6> union virtnet_ctl cq | vq_ring_mem | vq_desc_head_idx | vq_desc_tail_idx | vq_queue_index | offset | *notify_addr | rte_mbuf **sw_ring | <f7> vq_desc_extra vq_descx[0]"
+	   shape = "record"
+	   ];
+  "vring" [
+	   label = "<f0> struct vring | num | <f1> vring_desc *desc | <f2> vring_avail *avail | <f3> vring_used *used"
+	   shape = "record"
+	   ];
+  "vring_desc" [
+	label = "<f0> struct vring_desc | addr | len | flags | next"
+	shape = "record"
+	];
+  "vring_avail" [
+	label = "<f0> struct vring_avail | flags | idx | ring[0]"
+	shape = "record"
+	];
+  "vring_used" [
+	label = "<f0> struct vring_used | flags | idx | <f1> vring_used_elem ring[0]"
+	shape = "record"
+	];
+  "vring_used_elem" [
+	label = "<f0> struct vring_used_elem | id | len "
+	shape = "record"
+	];
+  "virtnet_rx" [
+	label = "<f0> struct virtnet_rx | <f1> virtqueue *vq | rte_mbuf fake_mbuf | mbuf_initializer | rte_mempool *mpool | queue_id | port_id | <f2> virtnet_stats stats | rte_memzone *mz"
+	shape = "record"
+	];
+  "virtnet_tx" [
+	label = "<f0> struct virtnet_tx | <f1> virtqueue *vq | rte_memzone *virtio_net_hdr_mz | virtio_net_hdr_mem | queue_id | port_id | <f2> virtnet_stats stats | rte_memzone *mz"
+	shape = "record"
+	];
+  "virtnet_ctl" [
+	label = "<f0> struct virtnet_ctl | <f1> virtqueue *vq | rte_memzone *virtio_net_hdr_mz | virtio_net_hdr_mem | port_id | rte_memzone *mz | lock"
+	shape = "record"
+	];
+  "virtnet_stats" [
+	label = "<f0> struct virtnet_stats | packets | bytes | errors | multicast | broadcast | size_bins[8]"
+	shape = "record"
+	];
+  "virtio_user_dev" [
+	label = "<f0> struct virtio_user_dev | vhostfd | listenfd | is_server | *ifname | *vhostfds | *tapfds | callfds[] | kickfds[] | mac_specified | max_queue_pairs | queue_pairs | queue_size | features | device_features | frontend_features | unsupported_features | status | port_id | mac_addr[] | path[] | <f1> union vring vrings[] | <f2> union vring_packed packed_vrings[] | <f3> virtio_user_queue packed_queues[] | qp_enabled[] | <f4> virtio_user_backend_ops *ops | mutex | started"
+	shape = "record"
+	];
+  "virtio_user_queue" [
+	label = "<f0> struct virtio_user_queue | used_idx | avail_wrap_counter | used_wrap_counter"
+	shape = "record"
+	];
+  "virtio_user_backend_ops" [
+	label = "<f0> struct virtio_user_backend_ops | *setup | *send_request | *enable_qp"
+	shape = "record"
+	];
+  "virtio_ops_user" [
+	label = "<f0> virtio_ops_user | vhost_user_setup | vhost_user_sock | vhost_user_enable_queue_pair"
+	shape = "record"
+	];
+  "virtio_ops_kernel" [
+	label = "<f0> virtio_ops_kernel | vhost_kernel_setup | vhost_kernel_ioctl | vhost_kernel_enable_queue_pair"
+	shape = "record"
+	];
+  "virtio_pci_ops" [
+	label = "<f0> struct virtio_pci_ops | *read_dev_cfg | *write_dev_cfg | *get_status | *set_status | *get_features | *set_features | *get_isr | *set_config_irq | *set_queue_irq | *get_queue_num | *setup_queue | *del_queue | *notify_queue"
+	shape = "record"
+	];
+  "virtio_pci_ops_instances" [
+	label = "<f0> instances | legacy_ops | modern_ops | virtio_user_ops"
+	shape = "record"
+	];
+  "virtio_hw_internal" [
+	label = "<f0> struct virtio_hw_internal | <f1> virtio_pci_ops *vtpci_ops | <f2> rte_pci_ioport io"
+	shape = "record"
+	];
+  "rte_pci_ioport" [
+	label = "<f0> struct rte_pci_ioport | <f1> rte_pci_device *dev | base | len"
+	shape = "record"
+	];
+  "virtio_hw":f6 -> "virtqueue":f0
+  "virtio_hw":f4 -> "virtio_user_dev":f0
+  "virtqueue":f1 -> "virtio_hw":f0
+  "virtqueue":f2 -> "vring":f0
+  "virtqueue":f4 -> "virtnet_rx":f0
+  "virtqueue":f5 -> "virtnet_tx":f0
+  "virtqueue":f6 -> "virtnet_ctl":f0
+  "vring": f1 -> "vring_desc": f0
+  "vring": f2 -> "vring_avail": f0
+  "vring": f3 -> "vring_used": f0
+  "vring_used": f1 -> "vring_used_elem": f0
+  "virtnet_rx":f2 -> "virtnet_stats":f0
+  "virtnet_tx":f2 -> "virtnet_stats":f0
+  "virtio_user_dev":f1 -> "vring":f0
+  "virtio_user_dev":f3 -> "virtio_user_queue":f0
+  "virtio_user_dev":f4 -> "virtio_user_backend_ops":f0
+  "virtio_user_backend_ops":f0 -> "virtio_ops_user":f0 [ style = dashed ];
+  "virtio_user_backend_ops":f0 -> "virtio_ops_kernel":f0 [ style = dashed ];
+  "virtio_hw_internal":f1 -> "virtio_pci_ops":f0
+  "virtio_hw_internal":f2 -> "rte_pci_ioport":f0
+  "virtio_pci_ops":f0 -> "virtio_pci_ops_instances":f0 [ style = dashed ];
+}
