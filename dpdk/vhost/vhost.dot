@@ -1,0 +1,113 @@
+digraph g {
+  graph [
+	 rankdir = "LR"
+	 ];
+  node [
+	fontsize = "16"
+	shape = "ellipse"
+	];
+  edge [
+	];
+  "virtio_net" [
+	label = "<f0> struct virtio_net | <f1> rte_vhost_memory *mem | features | protocol_features | vid | flags | vhost_hlen | broadcast_rarp | nr_vring | dequeue_zero_copy | extbuf | linearbuf | <f2> vhost_virtqueue *virtqueue[] | <f3> inflight_mem_info *inflight_info | ifname[] | log_size | log_base | log_addr | <f4> rte_ether_addr mac | mtu | <f5> vhost_device_ops const *notify_ops | nr_guest_pages | max_guest_pages | <f6> guest_page *guest_pages | slave_req_fd | slave_req_lock | postcopy_ufd | postcopy_listening | vpda_dev_id | *extern_data | <f7> rte_vhost_user_extern_ops extern_ops"
+	shape = "record"
+	   ];
+  "rte_vhost_memory" [
+	label = "<f0> struct rte_vhost_memory | nregions | <f1> rte_vhost_mem_region regions[]"
+	shape = "record"
+	];
+  "rte_vhost_mem_region" [
+	label = "<f0> struct rte_vhost_mem_region | guest_phys_addr | guest_user_addr | host_user_addr | size | *mmap_aaddr | mmap_size | fd"
+	shape = "record"
+	];
+  "inflight_mem_info" [
+	label = "<f0> struct inflight_mem_info | fd | *addr | size"
+	shape = "record"
+	];
+  "vhost_device_ops" [
+	label = "<f0> struct vhost_device_ops | new_device | destroy_device | vring_state_changed | features_changed | new_connection | destroy_connection | guest_notified | *reserved[1]"
+	shape = "record"
+	];
+  "rte_vhost_user_extern_ops" [
+	label = "<f0> struct rte_vhost_user_extern_ops | pre_msg_handle | post_msg_handle"
+	shape = "record"
+	];
+  "vring_desc" [
+	label = "<f0> struct vring_desc | addr | len | flags | next"
+	shape = "record"
+	];
+  "vring_avail" [
+	label = "<f0> struct vring_avail | flags | idx | ring[]"
+	shape = "record"
+	];
+  "vring_used_elem" [
+	label = "<f0> struct vring_used_elem | id | len"
+	shape = "record"
+	];
+  "vring_used" [
+	label = "<f0> struct vring_used | flags | idx | ring[]"
+	shape = "record"
+	];
+  "rte_vhost_inflight_desc_split" [
+	label = "<f0> struct rte_vhost_inflight_desc_split | inflight | padding[5] | next | counter"
+	shape = "record"
+	];
+  "rte_vhost_inflight_info_split" [
+	label = "<f0> struct rte_vhost_inflight_info_split | features | version | desc_num | last_inflight_io | used_idx | <f1> rte_vhost_inflight_desc_split desc[]"
+	shape = "record"
+	];
+  "rte_vhost_resubmit_desc" [
+	label = "<f0> struct rte_vhost_resubmit_desc | index | counter"
+	shape = "record"
+	];
+  "rte_vhost_resubmit_info" [
+	label = "<f0> struct rte_vhost_resubmit_info | <f1> rte_vhost_resubmit_desc *resubmit_list | resubmit_num"
+	shape = "record"
+	];
+  "zcopy_mbuf" [
+	label = "<f0> struct zcopy_mbuf | rte_mbuf *mbuf | desc_idx | desc_count | in_use | TAILQ_ENTRY(zcopy_mbuf) next"
+	shape = "record"
+	];
+  "vhost_vring_addr" [
+	label = "<f0> struct vhost_vring_addr | index | flags | desc_user_addr | used_user_addr | avail_user_addr | log_guest_addr"
+	shape = "record"
+	];
+  "batch_copy_elem" [
+	label = "<f0> struct batch_copy_elem | *dst | *src | len | log_addr"
+	shape = "record"
+	];
+  "log_cache_entry" [
+	label = "<f0> struct log_cache_entry | offset | val"
+	shape = "record"
+	];
+
+  "vhost_virtqueue" [
+	label = "<f0> struct vhost_virtqueue | <f1> union vring_desc *desc | <f2> union vring_packed_desc *desc_packed | <f3> union vring_avail *avail | <f4> union vring_packed_desc_event *driver_event | <f5> union vring_used *used | <f6> union vring_packed_desc_event *device_event | size | last_avail_idx | last_used_idx | singalled_used | singalled_used_valid | backend | enabled | access_ok | access_lock | callfd | kickfd | log_guest_addr | <f7> union rte_vhost_inflight_info_split *inflight_split | <f8> union rte_vhost_inflight_info_packed *inflight_packed | <f9> rte_vhost_resubmit_info *resubmit_inflight | global_counter | nr_zmbuf | zmbuf_size | last_zmbuf_idx | <f10> zcopy_mbuf *zmbufs | <f11> zcopy_mbuf_list zmbuf_list | <f12> union vring_used_elem *shadow_used_split | <f13> union vring_used_elem_packed *shadow_used_packed | shadow_used_idx | shadow_aligned_idx | shadow_last_used_idx | <f14> vhost_vring_addr ring_addrs | <f15> batch_copy_elem *batch_copy_elems | batch_copy_nb_elems | used_wrap_counter | avail_wrap_counter | <f16> log_cache_entry log_cache[] | log_cache_nb_elem | iotlb_lock | iotlb_pending_lock | rte_mempool *iotlb_pool | iotlb_list | iotlb_cache_nr | iotlb_pending_list"
+	shape = "record"
+	];
+  "vhost_user_socket:" [
+	label = "<f0> struct vhost_user_socket | conn_list | conn_mutex | *path | socket_fd | sockaddr_un un | is_server | reconnect | dequeue_zero_copy | iommu_support | use_builtin_virtio_net | extbuf | linearbuf | supported_features | features | protocol_features | vdpa_dev_id | <f1> vhost_device_ops *notify_ops"
+	shape = "record"
+	];
+
+  "virtio_net":f1 -> "rte_vhost_memory":f0
+  "virtio_net":f2 -> "vhost_virtqueue":f0
+  "virtio_net":f3 -> "inflight_mem_info":f0
+  "virtio_net":f5 -> "vhost_device_ops":f0
+  "virtio_net":f6 -> "rte_vhost_user_extern_ops":f0
+  "vhost_virtqueue":f1 -> "vring_desc":f0
+  "vhost_virtqueue":f3 -> "vring_avail":f0
+  "vhost_virtqueue":f5 -> "vring_used":f0
+  "vhost_virtqueue":f7 -> "rte_vhost_inflight_info_split":f0
+  "vhost_virtqueue":f9 -> "rte_vhost_resubmit_info":f0
+  "vhost_virtqueue":f10 -> "zcopy_mbuf":f0
+  "vhost_virtqueue":f12 -> "vring_used_elem":f0
+  "vhost_virtqueue":f14 -> "vhost_vring_addr":f0
+  "vhost_virtqueue":f15 -> "batch_copy_elem":f0
+  "vhost_virtqueue":f16 -> "log_cache_entry":f0
+  "rte_vhost_resubmit_info":f1 -> "rte_vhost_resubmit_desc"
+  "rte_vhost_inflight_info_split":f1 -> "rte_vhost_inflight_desc_split":f0
+  "vhost_user_socket": f1 -> "vhost_device_ops"
+
+  "rte_vhost_memory":f1 -> "rte_vhost_mem_region":f0
+}
