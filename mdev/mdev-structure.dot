@@ -3,42 +3,78 @@ digraph mdev {
 		rankdir = "LR"
 	];
 	node [
-		fontsize = "16"
-		shape = "ellipse"
+		fontsize = "16";
+		shape = "ellipse";
 	];
 	edge [
 	];
+
 	"mdev_bus" [
 		label = "<f0> mdev_bus_type | <f1> \"mdev\" | <f2> mdev_probe | <f3> mdev_remove"
-		shape = "record"
+			shape = "record"
 	];
+
 	"mdev_device" [
-		label = "<f0> struct mdev_device | <f1> dev | <f2> *parent | <f3> uuid | <f4> driver_data | <f5> ref | <f6> next | <f7> *type_kobj | <f8> active"
-		shape = "record"
+		label = "<f0> struct mdev_device | <f1> dev | <f2> *parent | <f3> uuid | <f4> *driver_data | <f5> ref | <f6> next | <f7> *type_kobj | <f8> active"
+			shape = "record"
 	];
+
 	"mdev_parent" [
 		label = "<f0> struct mdev_parent | <f1> *dev | <f2> *ops | <f3> ref | <f4> lock | <f5> next | <f6> mdev_types_kset | <f7> type_list"
-		shape = "record"
+			shape = "record"
 	];
+
 	"mdev_parent_ops" [
 		label = "<f0> struct mdev_parent_ops | <f1> *owner | <f2> **dev_attr_groups | <f3> **mdev_attr_groups | <f4> **supported_type_groups | <f5> *create | <f6> *remove | <f7> *open | <f8> *release | <f9> *read | <f10> *write | <f11> *ioctl | <f12> *mmap"
-		shape = "record"
+			shape = "record"
 	];
+
 	"mdev_driver" [
 		label = "<f0> struct mdev_driver | <f1> *name | <f2> *probe | <f3> *remove | <f4> driver"
+			shape = "record"
+	];
+
+	"vdpa_dev" [
+		label = "<f0> struct vdpa_dev | <f1> *mdev | <f2> ops_lock | <f3> vconfig[] | <f4> nr_vring | <f5> features | <f6> state | <f7> *mem_table | <f8> pending_reply | <f9> pending | <f10> *ops | <f11> *private | <f12> max_vrings | <f13> log_base | <f14> log_size | <f15> vring_info[]"
+			shape = "record"
+	];
+
+	"vhost_memory" [
+		label = "<f0> struct vhost_memory | <f1> nregions | <f2> padding | <f3> regions[]";
 		shape = "record"
 	];
 
+	"vhost_memory_region" [
+		label = "<f0> struct vhost_memory_region | <f1> guest_phys_addr | <f2> memeory_size | <f3> userspace_addr | <f4> flags_padding"
+		shape = "record"
+	];
+
+
 	"vfio_mdev_driver" [
-		       label = "<f0>  vfio_mdev_driver | <f1> \"vfio_mdev\" | <f2> vfio_mdev_probe | <f3> vfio_mdev_remove"
-		       shape = "record"
-		       ];
+		label = "<f0>  vfio_mdev_driver | <f1> \"vfio_mdev\" | <f2> vfio_mdev_probe | <f3> vfio_mdev_remove"
+		shape = "record"
+	];
+
+	"vdpa_device_ops" [
+		label = "<f0> struct vdpa_device_ops | <f1> start | <f2> stop | <f3> dma_map | <f4> dma_unmap | <f5> set_eventfd | <f6> supported_features | <f7> notify | <f8> get_notify_addr | <f9> set_features"
+		shape = "record"
+	]
+
+	"vdpa_vring_info" [
+			   label = "<f0> struct vdpa_vring_info | <f1> desc_user_addr | <f2> used_user_addr | <f3> avail_user_addr | <f4> log_guest_addr | <f5> size | <f6> base"
+			   shape = "record"
+	]
+
+	"ifcvf_mdev_fops" [
+			   label = "<f0> ifcvf_mdev_fops | <f1> mdev_type_groups | <f2> mdev_dev_groups | <f3> ifcvf_mdev_create | <f4> ifcvf_mdev_remove | <f5> vdpa_open | <f6> vdpa_close | <f7> vdpa_read | <f8> vdpa_write | <f9> vdpa_ioctl | <f10> vdpa_mmap"
+			   shape = "record"
+	]
 	"mdev_bus": f0 -> "mdev_device": f0 [
 		id = 0
 	];
 	"mdev_bus": f0 -> "mdev_driver": f0 [
 		id = 1
-		];
+	];
 	"mdev_device":f2 -> "mdev_parent":f0 [
 		id = 2
 	];
@@ -46,6 +82,29 @@ digraph mdev {
 		id = 3
 	];
 	"mdev_driver": f0 -> "vfio_mdev_driver": f0 [
-						     style=dashed
-						     ];
+		style = dashed
+		id = 4
+	];
+	"vdpa_dev": f1 -> "mdev_device": f0 [
+		id = 5
+	];
+	"mdev_device": f4 -> "vdpa_dev": f0 [
+		id = 6
+	];
+	"vdpa_dev": f7 -> "vhost_memory": f0 [
+		id = 7;
+	];
+	"vhost_memory": f3 -> "vhost_memory_region": f0 [
+		id = 8;
+	];
+	"vdpa_dev": f10 -> "vdpa_device_ops": f0 [
+		id = 9
+	];
+	"vdpa_dev": f15 -> "vdpa_vring_info": f0 [
+		id = 10
+	]
+	"mdev_parent_ops": f0 -> "ifcvf_mdev_fops": f0 [
+							style = dashed
+							id = 11
+	]
 }
